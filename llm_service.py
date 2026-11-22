@@ -120,7 +120,13 @@ def _get_client():
     if _client is None:
         key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
         if not key:
-            raise LLMError("API anahtarı bulunamadı. Proje klasörüne .env dosyası açıp GEMINI_API_KEY=... yaz.")
+            try:
+                import streamlit as st
+                key = st.secrets.get("GEMINI_API_KEY") or st.secrets.get("GOOGLE_API_KEY")
+            except Exception:
+                pass
+        if not key:
+            raise LLMError("API anahtarı bulunamadı. Streamlit Cloud ayarlarından (Secrets) GEMINI_API_KEY tanımlamalısın.")
         _client = genai.Client(api_key=key)
     return _client
 
