@@ -1,0 +1,4 @@
+streamlit>=1.39
+google-genai
+pydantic>=2.0
+python-dotenv
